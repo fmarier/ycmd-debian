@@ -27,6 +27,9 @@ override_dh_auto_clean:
 
 override_dh_install:
 	dh_install
+	# Remove dot from .ycm_extra_conf.py
+	mv $(DEB_INSTALL_DIR)/usr/lib/ycmd/.ycm_extra_conf.py \
+       $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycm_extra_conf.py
 	# No need to install tests
 	$(RM) -rv $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/completers/all/tests \
 	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/completers/completer_utils_test.py \
