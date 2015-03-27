@@ -1,4 +1,3 @@
-ycmd/*                                usr/lib/ycmd/
+ycmd/*                                usr/lib/ycmd/ycmd/
 ycm_*.so                              usr/lib/ycmd/
-debian/ycm_extra_conf.py              usr/lib/ycmd/
 third_party/frozendict/frozendict     usr/lib/ycmd/
