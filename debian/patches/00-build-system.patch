@@ -34,3 +34,15 @@ Description: Use Debian's llvm and gmock paths
  endif()
  
  if ( NOT IS_ABSOLUTE "${CLANG_INCLUDES_DIR}" )
+@@ -209,7 +209,10 @@
+     # On Debian-based systems, llvm installs into /usr/lib/llvm-x.y.
+     file( GLOB SYS_LLVM_PATHS "/usr/lib/llvm*/lib" )
+     # Need TEMP because find_library does not work with an option variable
+-    find_library( TEMP clang
++    find_library( TEMP
++                  clang-3.5
++                  clang-3.6
++                  clang-3.7
+                   PATHS
+                   ${ENV_LIB_PATHS}
+                   /usr/lib
