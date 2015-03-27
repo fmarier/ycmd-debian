@@ -12,6 +12,9 @@ DEB_INSTALL_DIR      = $(CURDIR)/debian/$(DEB_SOURCE)
 
 %:
 	dh $@ --with python2 --sourcedirectory=$(CURDIR)/cpp --builddirectory=$(BUILD_DIR) --parallel
+      
+override_dh_auto_configure:
+	dh_auto_configure -- -DUSE_SYSTEM_LIBCLANG=ON -DUSE_SYSTEM_BOOST=ON -DUSE_SYSTEM_GMOCK=ON
 
 override_dh_auto_test:
 	dh_auto_test
