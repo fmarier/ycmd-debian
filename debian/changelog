@@ -1,5 +1,14 @@
 ycmd (0+20150327+git03d18ea-1) UNRELEASED; urgency=low
 
+  TODO:
+  - Fill a ITP bug.
+  - Fix rpath issue:
+    E: ycmd: binary-or-shlib-defines-rpath usr/lib/ycmd/ycm_core.so /usr/lib/llvm-3.5/lib
+  - Find correct Section.
+  - ycm_core.so is linking librt and libboost-thread but it doesn't use any
+    of this libraries. libboost-thread only used for tests and that's why it
+    should stay in Build-Depends.
+
   * Initial release. (Closes: #0)
 
- -- Onur Aslan <onur@onur.im>  Tue, 17 Dec 2013 11:12:14 +0200
+ -- Onur Aslan <onur@onur.im>  Fri, 27 Mar 2015 16:14:44 +0200
