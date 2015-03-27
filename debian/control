@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Onur Aslan <onur@onur.im>
 Build-Depends: debhelper (>= 9),
  cmake,
+ dh-python,
  python-dev,
  google-mock,
  libclang-dev (>= 3.3),
