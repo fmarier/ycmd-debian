@@ -28,8 +28,7 @@ Depends: ${shlibs:Depends},
  python-bottle,
  python-jedi,
  python-requests (>= 2.2.1),
- python-waitress,
- vim-nox | vim-python
+ python-waitress
 Recommends: vim-youcompleteme
 Description: code-completion & comprehension server
  ycmd is a server that provides APIs for code-completion and other
