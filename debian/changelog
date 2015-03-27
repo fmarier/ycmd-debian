@@ -8,6 +8,7 @@ ycmd (0+20150327+git03d18ea-1) UNRELEASED; urgency=low
   - ycm_core.so is linking librt and libboost-thread but it doesn't use any
     of this libraries. libboost-thread only used for tests and that's why it
     should stay in Build-Depends.
+  - Run tests with flake.
 
   * Initial release. (Closes: #0)
 
