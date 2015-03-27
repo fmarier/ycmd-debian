@@ -1,4 +1,4 @@
-ycm/*                       usr/lib/vim-youcompleteme/
-ycm_build/ycm/*.so          usr/lib/vim-youcompleteme/
-debian/ycm_extra_conf.py              usr/lib/vim-youcompleteme/
-third_party/frozendict/frozendict     usr/lib/vim-youcompleteme/
+ycmd/*                                usr/lib/ycmd/
+ycm_*.so                              usr/lib/ycmd/
+debian/ycm_extra_conf.py              usr/lib/ycmd/
+third_party/frozendict/frozendict     usr/lib/ycmd/
