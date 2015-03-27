@@ -1,0 +1,36 @@
+Description: Use Debian's llvm and gmock paths
+
+--- a/cpp/ycm/tests/CMakeLists.txt
++++ b/cpp/ycm/tests/CMakeLists.txt
+@@ -30,8 +30,7 @@
+ 
+ if ( USE_SYSTEM_GMOCK )
+   set( CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}" )
+-  find_package( GTest REQUIRED )
+-  find_package( GMock REQUIRED )
++  add_subdirectory( /usr/src/gmock gmock )
+ else()
+   add_subdirectory( gmock )
+   set( GTEST_INCLUDE_DIRS ${gtest_SOURCE_DIR} ${gtest_SOURCE_DIR}/include )
+@@ -80,8 +79,8 @@
+ target_link_libraries( ${PROJECT_NAME}
+                        ${SERVER_LIB}
+                        ${CLIENT_LIB}
+-                       ${GTEST_LIBRARIES}
+-                       ${GMOCK_LIBRARIES} )
++                       gmock
++                       )
+ 
+ 
+ if ( NOT CMAKE_GENERATOR_IS_XCODE )
+--- a/cpp/ycm/CMakeLists.txt
++++ b/cpp/ycm/CMakeLists.txt
+@@ -116,7 +116,7 @@
+ if ( PATH_TO_LLVM_ROOT )
+   set( CLANG_INCLUDES_DIR "${PATH_TO_LLVM_ROOT}/include" )
+ else()
+-  set( CLANG_INCLUDES_DIR "${CMAKE_SOURCE_DIR}/llvm/include" )
++  file (GLOB CLANG_INCLUDES_DIR SYS_LLVM_INCLUDE_PATHS /usr/lib/llvm-3.*/include)
+ endif()
+ 
+ if ( NOT IS_ABSOLUTE "${CLANG_INCLUDES_DIR}" )
