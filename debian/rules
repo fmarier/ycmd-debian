@@ -28,11 +28,11 @@ override_dh_auto_clean:
 override_dh_install:
 	dh_install
 	# No need to install tests
-	$(RM) -rv $(DEB_INSTALL_DIR)/usr/lib/ycmd/completers/all/tests \
-	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/completers/completer_utils_test.py \
-	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/completers/cpp/tests \
-	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/completers/general/tests \
-	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/tests
+	$(RM) -rv $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/completers/all/tests \
+	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/completers/completer_utils_test.py \
+	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/completers/cpp/tests \
+	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/completers/general/tests \
+	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/tests
 
 get-orig-source:
 	TMPDIR=`mktemp -d -t`; \
