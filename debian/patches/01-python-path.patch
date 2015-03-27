@@ -1,0 +1,12 @@
+Description: Script is trying to add third_party directory to sys.path.
+ This package doesn't contain third_party modules, all third_party modules
+ available as Debian packages and this package already have them in Depends.
+--- a/ycmd/server_utils.py
++++ b/ycmd/server_utils.py
+@@ -24,6 +24,3 @@
+   sys.path.insert( 0, os.path.join(
+                           os.path.dirname( os.path.abspath( __file__ ) ),
+                           '..' ) )
+-
+-  from ycmd import utils
+-  utils.AddNearestThirdPartyFoldersToSysPath( __file__ )
