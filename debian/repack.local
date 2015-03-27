@@ -1,0 +1,22 @@
+SUFFIX=''
+
+rm clang_includes
+rm cpp/BoostParts
+rm cpp/llvm
+rm cpp/ycm/tests/gmock
+rm examples
+
+rm .git
+rm .gitignore
+rm .gitmodules
+rm .travis.yml
+
+rm third_party/argparse
+rm third_party/bottle
+rm third_party/jedi
+rm third_party/OmniSharpServer
+rm third_party/sh
+rm third_party/requests
+rm third_party/waitress
+
+rm third_party/frozendict/.git*

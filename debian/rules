@@ -1,0 +1,28 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+BUILD_DIR            = $(CURDIR)/ycm_build
+GIT_URL              = https://github.com/Valloric/ycmd.git
+DEB_SOURCE           = $(shell dpkg-parsechangelog | grep Source: | sed -e 's/Source: //')
+DEB_VERSION          = $(shell dpkg-parsechangelog | grep Version: | sed -e 's/Version: //')
+DEB_UPSTREAM_COMMIT  = $(shell echo $(DEB_VERSION) | sed -rn 's/.*git([^-]*).*/\1/p')
+DEB_UPSTREAM_VERSION = $(shell echo $(DEB_VERSION) | sed -e 's/-[^-]*$$//')
+DEB_INSTALL_DIR      = $(CURDIR)/debian/$(DEB_SOURCE)
+
+
+%:
+	dh $@ --with python2 --sourcedirectory=$(CURDIR)/cpp --builddirectory=$(BUILD_DIR) --parallel
+
+override_dh_auto_test:
+	dh_auto_test
+	cd $(BUILD_DIR)/ycm/tests && ./ycm_core_tests
+
+get-orig-source:
+	TMPDIR=`mktemp -d -t`; \
+	git clone --recursive $(GIT_URL) $$TMPDIR; \
+	cd $$TMPDIR; git checkout $(DEB_UPSTREAM_COMMIT); \
+	tar -czvf $(CURDIR)/ycmd.orig.tar.gz .; \
+	cd $(CURDIR); \
+	dpt repack.sh --upstream-version $(DEB_UPSTREAM_VERSION) ycmd.orig.tar.gz ; \
+	$(RM) ycmd.orig.tar.gz ; \
+	$(RM) -r $$TMPDIR

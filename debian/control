@@ -1,0 +1,39 @@
+Source: ycmd
+Section: editors
+Priority: optional
+Maintainer: Onur Aslan <onur@onur.im>
+Build-Depends: debhelper (>= 9),
+ cmake,
+ python-dev,
+ google-mock,
+ libclang-dev (>= 3.3),
+ libboost-python-dev,
+ libboost-system-dev,
+ libboost-filesystem-dev,
+ libboost-regex-dev,
+ libgtest-dev
+X-Python-Version: >= 2.7
+Standards-Version: 3.9.6
+Homepage: http://valloric.github.io/YouCompleteMe/
+Vcs-Git: git://anonscm.debian.org/collab-maint/vim-youcompleteme.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/vim-youcompleteme.git
+
+Package: ycmd
+Architecture: any
+Depends: ${shlibs:Depends},
+ ${misc:Depends},
+ ${python:Depends},
+ python-bottle,
+ python-futures,
+ python-jedi,
+ python-requests (>= 2.2.1),
+ python-waitress,
+ vim-nox | vim-python
+Recommends: vim-youcompleteme
+Description: code-completion & comprehension server
+ ycmd is a server that provides APIs for code-completion and other
+ code-comprehension use-cases like semantic GoTo commands (and others). For
+ certain filetypes, ycmd can also provide diagnostic errors and warnings.
+ .
+ ycmd was originally part of YouCompleteMe's codebase, but has been split out
+ into a separate project so that it can be used in editors other than Vim.
