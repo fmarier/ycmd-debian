@@ -1,4 +1,5 @@
-Description: Use Debian's llvm and gmock paths
+Description: Use Debian's llvm and gmock paths. Also removes unused librt and
+ libboost-thread links.
 
 --- a/cpp/ycm/tests/CMakeLists.txt
 +++ b/cpp/ycm/tests/CMakeLists.txt
@@ -34,6 +35,15 @@ Description: Use Debian's llvm and gmock paths
  endif()
  
  if ( NOT IS_ABSOLUTE "${CLANG_INCLUDES_DIR}" )
+@@ -145,7 +145,7 @@
+ endif()
+ 
+ if ( USE_SYSTEM_BOOST )
+-  find_package( Boost REQUIRED COMPONENTS python filesystem system regex thread )
++  find_package( Boost REQUIRED COMPONENTS python filesystem system regex )
+ else()
+   set( Boost_INCLUDE_DIR ${BoostParts_SOURCE_DIR} )
+   set( Boost_LIBRARIES BoostParts )
 @@ -209,7 +209,10 @@
      # On Debian-based systems, llvm installs into /usr/lib/llvm-x.y.
      file( GLOB SYS_LLVM_PATHS "/usr/lib/llvm*/lib" )
@@ -46,3 +56,14 @@ Description: Use Debian's llvm and gmock paths
                    PATHS
                    ${ENV_LIB_PATHS}
                    /usr/lib
+@@ -239,10 +242,6 @@
+   set( CMAKE_INSTALL_RPATH "${EXTRA_RPATH}:${CMAKE_INSTALL_RPATH}" )
+ endif()
+ 
+-# Needed on Linux machines, but not on Macs and OpenBSD
+-if ( UNIX AND NOT ( APPLE OR SYSTEM_IS_OPENBSD ) )
+-  set( EXTRA_LIBS rt )
+-endif()
+ 
+ #############################################################################
+ 
