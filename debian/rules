@@ -20,6 +20,11 @@ override_dh_auto_test:
 	dh_auto_test
 	cd $(BUILD_DIR)/ycm/tests && ./ycm_core_tests
 
+override_dh_auto_clean:
+	dh_auto_clean
+	$(RM) -rfv *.so
+	$(RM) -rfv $(BUILD_DIR)
+
 get-orig-source:
 	TMPDIR=`mktemp -d -t`; \
 	git clone --recursive $(GIT_URL) $$TMPDIR; \
