@@ -1,1 +1,1 @@
-usr/lib/ycmd/__main__.py usr/bin/ycmd
+usr/lib/ycmd/ycmd/__main__.py usr/bin/ycmd
