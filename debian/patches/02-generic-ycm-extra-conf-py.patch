@@ -1,6 +1,7 @@
 Description: This patch converts projets ycm_extra_conf.py to a generic
  configuration for semantic completion. This patch also sets global
  ycm_extra_conf in default_settings.json
+
 --- a/cpp/ycm/.ycm_extra_conf.py
 +++ b/cpp/ycm/.ycm_extra_conf.py
 @@ -42,10 +42,10 @@
