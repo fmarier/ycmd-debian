@@ -1,11 +1,10 @@
 ycmd (0+20150327+git03d18ea-1) UNRELEASED; urgency=low
 
   TODO:
-  - Fill a ITP bug.
   - Find correct Section.
   - Run tests with flake.
   - Write a man page for ycmd.
 
-  * Initial release. (Closes: #0)
+  * Initial release. (Closes: #771330)
 
  -- Onur Aslan <onur@onur.im>  Fri, 27 Mar 2015 16:14:44 +0200
