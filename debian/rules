@@ -19,13 +19,12 @@ override_dh_auto_configure:
 override_dh_auto_test:
 	dh_auto_test
 	cd $(BUILD_DIR)/ycm/tests && ./ycm_core_tests
-	./run_tests.sh --skip-build -- --exclude=".*CsCompleter.*" --exclude=".*TypeScript.*"
+	./run_tests.sh --skip-build -- --exclude=".*CsCompleter.*" --exclude=".*TypeScript.*" --no-byte-compile
 
 override_dh_auto_clean:
 	dh_auto_clean
 	$(RM) -rfv *.so
 	$(RM) -rfv $(BUILD_DIR)
-	find $(CURDIR) -name '*.pyc' -exec $(RM) -rfv {} \;
 
 override_dh_install:
 	dh_install
