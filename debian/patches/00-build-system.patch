@@ -26,7 +26,7 @@ Description: Use Debian's llvm and gmock paths. Also removes unused librt and
  if ( NOT CMAKE_GENERATOR_IS_XCODE )
 --- a/cpp/ycm/CMakeLists.txt
 +++ b/cpp/ycm/CMakeLists.txt
-@@ -116,7 +116,7 @@
+@@ -140,7 +140,7 @@
  if ( PATH_TO_LLVM_ROOT )
    set( CLANG_INCLUDES_DIR "${PATH_TO_LLVM_ROOT}/include" )
  else()
@@ -35,7 +35,7 @@ Description: Use Debian's llvm and gmock paths. Also removes unused librt and
  endif()
  
  if ( NOT IS_ABSOLUTE "${CLANG_INCLUDES_DIR}" )
-@@ -145,7 +145,7 @@
+@@ -169,7 +169,7 @@
  endif()
  
  if ( USE_SYSTEM_BOOST )
@@ -44,7 +44,7 @@ Description: Use Debian's llvm and gmock paths. Also removes unused librt and
  else()
    set( Boost_INCLUDE_DIR ${BoostParts_SOURCE_DIR} )
    set( Boost_LIBRARIES BoostParts )
-@@ -209,7 +209,10 @@
+@@ -233,7 +233,10 @@
      # On Debian-based systems, llvm installs into /usr/lib/llvm-x.y.
      file( GLOB SYS_LLVM_PATHS "/usr/lib/llvm*/lib" )
      # Need TEMP because find_library does not work with an option variable
@@ -56,7 +56,7 @@ Description: Use Debian's llvm and gmock paths. Also removes unused librt and
                    PATHS
                    ${ENV_LIB_PATHS}
                    /usr/lib
-@@ -239,10 +242,6 @@
+@@ -263,10 +266,6 @@
    set( CMAKE_INSTALL_RPATH "${EXTRA_RPATH}:${CMAKE_INSTALL_RPATH}" )
  endif()
  
