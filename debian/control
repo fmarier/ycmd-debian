@@ -1,5 +1,5 @@
 Source: ycmd
-Section: editors
+Section: devel
 Priority: optional
 Maintainer: Onur Aslan <onur@onur.im>
 Build-Depends: debhelper (>= 9),
