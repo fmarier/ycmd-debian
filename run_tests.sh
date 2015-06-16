@@ -46,7 +46,7 @@ fi
 
 if ! $skip_build; then
   EXTRA_CMAKE_ARGS=$extra_cmake_args YCM_TESTRUN=1 \
-    "${SCRIPT_DIR}/build.py" --omnisharp-completer
+    "${SCRIPT_DIR}/build.py" --omnisharp-completer --gocode-completer
 fi
 
 for directory in "${SCRIPT_DIR}"/third_party/*; do
@@ -62,7 +62,7 @@ if $use_clang_completer; then
     nosetests -v "${SCRIPT_DIR}/ycmd"
   fi
 else
-  if "$*"; then
+  if [ "$*" ]; then
     nosetests -v --exclude=".*Clang.*" $@
   else
     nosetests -v --exclude=".*Clang.*" "${SCRIPT_DIR}/ycmd"
