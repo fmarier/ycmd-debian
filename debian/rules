@@ -18,8 +18,8 @@ override_dh_auto_configure:
 
 override_dh_auto_test:
 	dh_auto_test
-	./run_tests.sh --skip-build -- --exclude=".*CsCompleter.*" --exclude=".*TypeScript.*"
 	cd $(BUILD_DIR)/ycm/tests && ./ycm_core_tests
+	./run_tests.sh --skip-build -- --exclude=".*CsCompleter.*" --exclude=".*TypeScript.*"
 
 override_dh_auto_clean:
 	dh_auto_clean
