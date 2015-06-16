@@ -37,6 +37,7 @@ override_dh_install:
 	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/completers/completer_utils_test.py \
 	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/completers/cpp/tests \
 	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/completers/general/tests \
+	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/completers/go/tests \
 	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/tests
 
 get-orig-source:
