@@ -18,5 +18,6 @@ rm third_party/OmniSharpServer
 rm third_party/sh
 rm third_party/requests
 rm third_party/waitress
+rm third_party/gocode
 
 rm third_party/frozendict/.git*
