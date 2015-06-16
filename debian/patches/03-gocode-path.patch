@@ -1,0 +1,17 @@
+Description: Upstream is providing its own version of gocode. This package
+ is using gocode package and this patch is setting default gocode path.
+
+--- a/ycmd/completers/go/gocode_completer.py
++++ b/ycmd/completers/go/gocode_completer.py
+@@ -35,10 +35,7 @@
+ NO_COMPLETIONS_MESSAGE = 'Gocode returned empty JSON response.'
+ GOCODE_PANIC_MESSAGE = ( 'Gocode panicked trying to find completions, ' +
+                          'you likely have a syntax error.' )
+-PATH_TO_GOCODE_BINARY = os.path.join(
+-  os.path.abspath( os.path.dirname( __file__ ) ),
+-  '..', '..', '..', 'third_party', 'gocode',
+-  'gocode' + ( '.exe' if utils.OnWindows() else '' ) )
++PATH_TO_GOCODE_BINARY = '/usr/bin/gocode'
+ 
+ _logger = logging.getLogger( __name__ )
+ 
