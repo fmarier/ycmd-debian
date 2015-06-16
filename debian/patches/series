@@ -1,3 +1,4 @@
 00-build-system.patch
 01-python-path.patch
 02-generic-ycm-extra-conf-py.patch
+03-gocode-path.patch
