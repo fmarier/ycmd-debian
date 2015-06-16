@@ -19,6 +19,8 @@ override_dh_auto_configure:
 override_dh_auto_test:
 	dh_auto_test
 	cd $(BUILD_DIR)/ycm/tests && ./ycm_core_tests
+	# Skip CsCompleter (OmniSharp) and TypeScript tests
+	# This package doesn't support them
 	./run_tests.sh --skip-build -- --exclude=".*CsCompleter.*" --exclude=".*TypeScript.*" --no-byte-compile
 
 override_dh_auto_clean:
