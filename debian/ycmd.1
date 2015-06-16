@@ -1,0 +1,59 @@
+.TH ycmd 1
+.SH NAME
+ycmd - code-completion and comprehension server
+.SH SYNOPSIS
+.B ycmd
+.RB [ \-h]
+.RB [ \--host
+.IR HOST ]
+.RB [ \--port
+.IR PORT ]
+.RB [ \--log
+.IR LOGLEVEL ]
+.RB [ \--idle_suicide_seconds
+.IR IDLE_SUICIDE_SECONDS ]
+.RB [ \--options_file
+.IR OPTIONS_FILE ]
+.RB [ \--stdout
+.IR STDOUT ]
+.RB [ \--stderr
+.IR STDERR ]
+.RB [ \--keep_logfiles]
+.SH DESCRIPTION
+ycmd is a server that provides APIs for code-completion and other
+code-comprehension use-cases like semantic GoTo commands (and others). For
+certain filetypes, ycmd can also provide diagnostic errors and warnings.
+.SH OPTIONS
+.TP
+.BR \-h ", " \-\^\-help
+Print a usage message briefly summarizing these command-line options
+and the bug-reporting address, then exit.
+.TP
+.BR \-\^\-host " " [ \fIHOST\fP ]
+Listen on specified 
+.I HOST
+address (default is localhost if none specified).
+.TP
+.BR \-\^\-port " " [ \fIPORT\fP ]
+Listen on specified TCP
+.I PORT
+number.
+.TP
+.BR \-\^\-log" " [ \fILOGLEVEL\fP ]
+Log level, one of [ \fIdebug\fP | \fIinfo\fP | \fIwarning\fP | \fIerror\fP| \fIcritical\fP ]
+.TP
+.BR \-\^\-idle_suicide_seconds " " [ \fIIDLE_SUICIDE_SECONDS\fP ]
+.IR IDLE_SUICIDE_SECONDS
+before server shuts down.
+.TP
+.BR \-\^\-options_file " " [ \fIOPTIONS_FILE\fP ]
+File with user options, in JSON format.
+.TP
+.BR \-\^\-stdout " " [ \fISTDOUT\fP ]
+Optional file to use for stdout.
+.TP
+.BR \-\^\-stderr " " [ \fISTDERR\fP ]
+Optional file to use for stderr.
+.TP
+.BR \-\^\-keep_logfiles
+Retain logfiles after the server exits.
