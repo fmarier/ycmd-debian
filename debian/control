@@ -37,6 +37,3 @@ Description: code-completion & comprehension server
  ycmd is a server that provides APIs for code-completion and other
  code-comprehension use-cases like semantic GoTo commands (and others). For
  certain filetypes, ycmd can also provide diagnostic errors and warnings.
- .
- ycmd was originally part of YouCompleteMe's codebase, but has been split out
- into a separate project so that it can be used in editors other than Vim.
