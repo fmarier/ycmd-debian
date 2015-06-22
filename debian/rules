@@ -22,7 +22,9 @@ ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	# Skip CsCompleter (OmniSharp) and TypeScript tests
 	# This package doesn't support them
 	# We are also skipping UnknownExtraConfException test
-	# Patched .ycm_extra_conf.py (see 02-generic-ycm-extra-conf.patch) failing
+	# If ycmd package is installed in your system or
+	# /usr/lib/ycmd/ycm_extra_conf.py is present, UnknownExtraConfException is
+	# failing
 	./run_tests.sh --skip-build -- --exclude=".*CsCompleter.*" \
 	                               --exclude=".*TypeScript.*" \
 								   --exclude=".*UnknownExtraConfException.*" \
