@@ -21,14 +21,18 @@ ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	cd $(BUILD_DIR)/ycm/tests && ./ycm_core_tests
 	# Skip CsCompleter (OmniSharp) and TypeScript tests
 	# This package doesn't support them
+	#
 	# We are also skipping UnknownExtraConfException test
 	# If ycmd package is installed in your system or
 	# /usr/lib/ycmd/ycm_extra_conf.py is present, UnknownExtraConfException is
 	# failing
-	./run_tests.sh --skip-build -- --exclude=".*CsCompleter.*" \
-	                               --exclude=".*TypeScript.*" \
-								   --exclude=".*UnknownExtraConfException.*" \
-								   --no-byte-compile
+	#
+	# This package only works when system language supports UTF-8
+	# If LC_ALL is not a UTF-8 based language, some UTF-8 tests are failing
+	LC_ALL=C.UTF-8 ./run_tests.sh --skip-build -- --exclude=".*CsCompleter.*" \
+                                                  --exclude=".*TypeScript.*" \
+                                                  --exclude=".*UnknownExtraConfException.*" \
+                                                  --no-byte-compile
 endif
 
 override_dh_auto_clean:
