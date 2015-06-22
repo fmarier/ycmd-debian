@@ -10,6 +10,25 @@ DEB_UPSTREAM_VERSION = $(shell echo $(DEB_VERSION) | sed -e 's/-[^-]*$$//')
 DEB_INSTALL_DIR      = $(CURDIR)/debian/$(DEB_SOURCE)
 
 
+# Skip CsCompleter (OmniSharp) and TypeScript tests. This package doesn't
+# support them.
+# We are also skipping UnknownExtraConfException test.
+# If ycmd package is installed in your system or
+# /usr/lib/ycmd/ycm_extra_conf.py is present, UnknownExtraConfException is
+# failing due to global_ycm_extra_conf defined in
+# 02-generic-ycm-extra-conf-py.patch
+EXCLUDE_TEST_PARAMS  = --exclude='.*CsCompleter.*' --exclude='.*TypeScript.*' --exclude='.*UnknownExtraConfException.*'
+
+# This package is providing extra golang completion feature if golang and
+# gocode packages are installed. *GoCodeCompleter* tests also require golang
+# and gocode packages. gocode and golang is not available in every
+# architecture. Skip GoCodeCompleter tests if DEB_BUILD_ARCH is not supported
+# by golang
+GO_DEP_ARCH          = $(shell dpkg-architecture -qDEB_BUILD_ARCH | egrep -x "(amd64|armel|armhf|i386)" > /dev/null; echo $$?)
+ifneq ($(GO_DEP_ARCH),0)
+  EXCLUDE_TEST_PARAMS += --exclude='.*GoCodeCompleter.*'
+endif
+
 %:
 	dh $@ --with python2 --sourcedirectory=$(CURDIR)/cpp --builddirectory=$(BUILD_DIR) --parallel
       
@@ -19,20 +38,8 @@ override_dh_auto_configure:
 override_dh_auto_test:
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	cd $(BUILD_DIR)/ycm/tests && ./ycm_core_tests
-	# Skip CsCompleter (OmniSharp) and TypeScript tests
-	# This package doesn't support them
-	#
-	# We are also skipping UnknownExtraConfException test
-	# If ycmd package is installed in your system or
-	# /usr/lib/ycmd/ycm_extra_conf.py is present, UnknownExtraConfException is
-	# failing
-	#
-	# This package only works when system language supports UTF-8
-	# If LC_ALL is not a UTF-8 based language, some UTF-8 tests are failing
-	LC_ALL=C.UTF-8 ./run_tests.sh --skip-build -- --exclude=".*CsCompleter.*" \
-	                                              --exclude=".*TypeScript.*" \
-	                                              --exclude=".*UnknownExtraConfException.*" \
-	                                              --no-byte-compile
+	# Some tests only works if system language is UTF-8 based
+	LC_ALL=C.UTF-8 ./run_tests.sh --skip-build -- --no-byte-compile $(EXCLUDE_TEST_PARAMS)
 endif
 
 override_dh_auto_clean:
