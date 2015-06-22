@@ -17,6 +17,7 @@ override_dh_auto_configure:
 	dh_auto_configure -- -DUSE_SYSTEM_LIBCLANG=ON -DUSE_SYSTEM_BOOST=ON -DUSE_SYSTEM_GMOCK=ON
 
 override_dh_auto_test:
+ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	cd $(BUILD_DIR)/ycm/tests && ./ycm_core_tests
 	# Skip CsCompleter (OmniSharp) and TypeScript tests
 	# This package doesn't support them
@@ -26,6 +27,7 @@ override_dh_auto_test:
 	                               --exclude=".*TypeScript.*" \
 								   --exclude=".*UnknownExtraConfException.*" \
 								   --no-byte-compile
+endif
 
 override_dh_auto_clean:
 	dh_auto_clean
