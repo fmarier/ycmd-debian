@@ -1,8 +1,5 @@
-ycmd (0+20150616+gitd7a3653-1) UNRELEASED; urgency=low
-
-  TODO:
-  - Tests are failing if ycmd package is installed. Fix this.
+ycmd (0+20150616+gitd7a3653-1) unstable; urgency=low
 
   * Initial release. (Closes: #771330)
 
- -- Onur Aslan <onur@onur.im>  Fri, 27 Mar 2015 16:14:44 +0200
+ -- Onur Aslan <onur@onur.im>  Mon, 22 Jun 2015 20:06:43 +0300
