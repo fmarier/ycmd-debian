@@ -30,9 +30,9 @@ ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	# This package only works when system language supports UTF-8
 	# If LC_ALL is not a UTF-8 based language, some UTF-8 tests are failing
 	LC_ALL=C.UTF-8 ./run_tests.sh --skip-build -- --exclude=".*CsCompleter.*" \
-                                                  --exclude=".*TypeScript.*" \
-                                                  --exclude=".*UnknownExtraConfException.*" \
-                                                  --no-byte-compile
+	                                              --exclude=".*TypeScript.*" \
+	                                              --exclude=".*UnknownExtraConfException.*" \
+	                                              --no-byte-compile
 endif
 
 override_dh_auto_clean:
