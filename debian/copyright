@@ -1,6 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: vim-youcompleteme
-Source: http://valloric.github.io/YouCompleteMe/
+Upstream-Name: ycmd
+Source: https://github.com/Valloric/ycmd
 
 Files: *
 Copyright: 2011-2013, Google Inc.

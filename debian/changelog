@@ -1,3 +1,9 @@
+ycmd (0+20150616+gitd7a3653-2) UNRELEASED; urgency=low
+
+  * Update Upstream-Name and Source URL in debian/copyright.
+
+ -- Onur Aslan <onur@onur.im>  Mon, 13 Jul 2015 12:45:35 +0300
+
 ycmd (0+20150616+gitd7a3653-1) unstable; urgency=low
 
   * Initial release. (Closes: #771330)
