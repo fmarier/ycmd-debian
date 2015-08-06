@@ -45,15 +45,18 @@ if ( USE_CLANG_COMPLETER AND
      NOT EXTERNAL_LIBCLANG_PATH )
 
   if ( APPLE )
-    set( CLANG_DIRNAME "clang+llvm-3.6.1-x86_64-apple-darwin" )
+    set( CLANG_DIRNAME "clang+llvm-3.6.2-x86_64-apple-darwin" )
     set( CLANG_SHA256
-         "b438a5e0aad3d9af0f21dc2c9a58f7dbc845740acea17c8fa69aa15e98457f74" )
+         "a796b60dbdf849a946ba142f7c05233975ec85bc04468a88e920dee02542a77d" )
     set( CLANG_FILENAME "${CLANG_DIRNAME}.tar.xz" )
   else()
     if ( 64_BIT_PLATFORM )
-      set( CLANG_DIRNAME "clang+llvm-3.6.1-x86_64-linux-gnu-ubuntu-15.04" )
+      # We MUST support the latest Ubuntu LTS release!
+      # At the time of writing, that's 14.04. Switch to next LTS ~6 months after
+      # it comes out.
+      set( CLANG_DIRNAME "clang+llvm-3.6.2-x86_64-linux-gnu-ubuntu-14.04" )
       set( CLANG_SHA256
-           "374ce3b116e2aa1faa530604e6782b986c3b3296420bb15d366d0547833a9a3d" )
+           "70ff742456459ecad363462c72cba00aaa5473f699da29a2a6125ee7edfb967a" )
       set( CLANG_FILENAME "${CLANG_DIRNAME}.tar.xz" )
     else()
       # Clang 3.3 is the last version with pre-built x86 binaries upstream.
@@ -81,9 +84,9 @@ if ( USE_CLANG_COMPLETER AND
   endif()
 
   if( CLANG_DOWNLOAD )
-    message( "Downloading Clang 3.6" )
+    message( "Downloading Clang 3.6.2" )
 
-    set( CLANG_URL "http://llvm.org/releases/3.6.1" )
+    set( CLANG_URL "http://llvm.org/releases/3.6.2" )
     file(
       DOWNLOAD "${CLANG_URL}/${CLANG_FILENAME}" "${CLANG_LOCAL_FILE}"
       SHOW_PROGRESS EXPECTED_HASH SHA256=${CLANG_SHA256}
@@ -304,17 +307,19 @@ target_link_libraries( ${SERVER_LIB}
                      )
 
 if( LIBCLANG_TARGET )
-  if( NOT WIN32 )
+  # When building with MSVC, we need to copy libclang.dll instead of libclang.lib
+  if( MSVC )
     add_custom_command(
       TARGET ${SERVER_LIB}
       POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy "${LIBCLANG_TARGET}" "$<TARGET_FILE_DIR:${SERVER_LIB}>"
+      COMMAND ${CMAKE_COMMAND} -E copy "${PATH_TO_LLVM_ROOT}/bin/libclang.dll" "$<TARGET_FILE_DIR:${SERVER_LIB}>"
     )
   else()
     add_custom_command(
       TARGET ${SERVER_LIB}
       POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy "${PATH_TO_LLVM_ROOT}/bin/libclang.dll" "$<TARGET_FILE_DIR:${SERVER_LIB}>")
+      COMMAND ${CMAKE_COMMAND} -E copy "${LIBCLANG_TARGET}" "$<TARGET_FILE_DIR:${SERVER_LIB}>"
+    )
   endif()
 endif()
 
