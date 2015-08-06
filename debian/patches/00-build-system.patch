@@ -44,19 +44,18 @@ Description: Use Debian's llvm and gmock paths. Also removes unused librt and
  else()
    set( Boost_INCLUDE_DIR ${BoostParts_SOURCE_DIR} )
    set( Boost_LIBRARIES BoostParts )
-@@ -236,7 +236,10 @@
+@@ -236,7 +236,9 @@
      # On Debian-based systems, llvm installs into /usr/lib/llvm-x.y.
      file( GLOB SYS_LLVM_PATHS "/usr/lib/llvm*/lib" )
      # Need TEMP because find_library does not work with an option variable
 -    find_library( TEMP clang
 +    find_library( TEMP
-+                  clang-3.5
 +                  clang-3.6
 +                  clang-3.7
                    PATHS
                    ${ENV_LIB_PATHS}
                    /usr/lib
-@@ -266,10 +269,6 @@
+@@ -266,10 +268,6 @@
    set( CMAKE_INSTALL_RPATH "${EXTRA_RPATH}:${CMAKE_INSTALL_RPATH}" )
  endif()
  
