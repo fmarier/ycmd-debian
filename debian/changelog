@@ -1,5 +1,11 @@
 ycmd (0+20150804+git6f4dbb4-1) UNRELEASED; urgency=low
 
+  * New upstream release.
+  * Refresh patches for new upstream version.
+  * Replace libclang-dev build dependency with
+    libclang-3.6-dev | libclang3.7-dev.
+  * Remove clang-3.5 support in 00-build-system.patch.
+  * Add 04-test-basic-string-alias.patch.
   * Update Upstream-Name and Source URL in debian/copyright.
 
  -- Onur Aslan <onur@onur.im>  Mon, 13 Jul 2015 12:45:35 +0300
