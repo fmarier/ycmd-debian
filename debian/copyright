@@ -10,18 +10,18 @@ Files: cpp/ycm/tests/cmake/FindGMock.cmake
 Copyright: 2011, Matej Svec
 License: GPL-3+
 
-Files: ycmd/completers/python/hook.py,
+Files: ycmd/completers/python/hook.py
  ycmd/completers/python/jedi_completer.py
 Copyright: 2011-2012, Stephen Sugden <me@stephensugden.com>
 License: GPL-3+
 
-Files: ycmd/completers/general/filename_completer.py,
- ycmd/completers/general/ultisnips_completer.py,
+Files: ycmd/completers/general/filename_completer.py
+ ycmd/completers/general/ultisnips_completer.py
  ycmd/completers/general/general_completer_store.py
 Copyright: 2013, Stanislav Golovanov <stgolovanov@gmail.com>
 License: GPL-3+
 
-Files: ycmd/completers/cs/hook.py,
+Files: ycmd/completers/cs/hook.py
  ycmd/completers/cs/cs_completer.py
 Copyright: 2011-2012, Chiel ten Brinke <ctenbrinke@gmail.com>
 License: GPL-3+
