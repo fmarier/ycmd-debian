@@ -1,4 +1,4 @@
-ycmd (0+20150804+git6f4dbb4-1) UNRELEASED; urgency=low
+ycmd (0+20150804+git6f4dbb4-1) unstable; urgency=low
 
   * New upstream release.
   * Refresh patches for new upstream version.
@@ -11,7 +11,7 @@ ycmd (0+20150804+git6f4dbb4-1) UNRELEASED; urgency=low
   * Update Upstream-Name and Source URL in debian/copyright.
   * Update copyright info and years.
 
- -- Onur Aslan <onur@onur.im>  Mon, 13 Jul 2015 12:45:35 +0300
+ -- Onur Aslan <onur@onur.im>  Fri, 07 Aug 2015 12:10:08 +0300
 
 ycmd (0+20150616+gitd7a3653-1) unstable; urgency=low
 
