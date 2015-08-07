@@ -9,6 +9,7 @@ ycmd (0+20150804+git6f4dbb4-1) UNRELEASED; urgency=low
   * Update d/install to install EXPECTED_CORE_VERSION and
     check_core_version.py
   * Update Upstream-Name and Source URL in debian/copyright.
+  * Update copyright info and years.
 
  -- Onur Aslan <onur@onur.im>  Mon, 13 Jul 2015 12:45:35 +0300
 
