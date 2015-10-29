@@ -44,25 +44,38 @@ if ( USE_CLANG_COMPLETER AND
      NOT PATH_TO_LLVM_ROOT AND
      NOT EXTERNAL_LIBCLANG_PATH )
 
+  set( CLANG_VERSION "3.7.0" )
+
   if ( APPLE )
-    set( CLANG_DIRNAME "clang+llvm-3.6.2-x86_64-apple-darwin" )
+    set( CLANG_DIRNAME "clang+llvm-${CLANG_VERSION}-x86_64-apple-darwin" )
     set( CLANG_SHA256
-         "a796b60dbdf849a946ba142f7c05233975ec85bc04468a88e920dee02542a77d" )
+         "057e56b445ac5dfbf0d5475badab374edebe8db5428001c8829340e40724b50d" )
     set( CLANG_FILENAME "${CLANG_DIRNAME}.tar.xz" )
+  elseif ( WIN32 )
+    if( 64_BIT_PLATFORM )
+      set( CLANG_DIRNAME "LLVM-${CLANG_VERSION}-win64" )
+      set( CLANG_SHA256
+           "04a393cf73bc7416c9903aa08f47f15c77cf475b22a607ac4b7493a658a11a3f" )
+    else()
+      set( CLANG_DIRNAME "LLVM-${CLANG_VERSION}-win32" )
+      set( CLANG_SHA256
+           "75933480c8f8e3ae3cf9281494bf0057e9e4cfae4315f59c468a4e850a86f544" )
+    endif()
+    set( CLANG_FILENAME "${CLANG_DIRNAME}.exe" )
   else()
     if ( 64_BIT_PLATFORM )
       # We MUST support the latest Ubuntu LTS release!
       # At the time of writing, that's 14.04. Switch to next LTS ~6 months after
       # it comes out.
-      set( CLANG_DIRNAME "clang+llvm-3.6.2-x86_64-linux-gnu-ubuntu-14.04" )
+      set( CLANG_DIRNAME "clang+llvm-${CLANG_VERSION}-x86_64-linux-gnu-ubuntu-14.04" )
       set( CLANG_SHA256
-           "70ff742456459ecad363462c72cba00aaa5473f699da29a2a6125ee7edfb967a" )
+           "093a94ff8982ae78461f0d2604c98f6b454c15e2ef768d34c235c6676c336460" )
       set( CLANG_FILENAME "${CLANG_DIRNAME}.tar.xz" )
     else()
       # Clang 3.3 is the last version with pre-built x86 binaries upstream.
       # That's too old now.
-      message( FATAL_ERROR "No pre-built Clang 3.6 binaries for 32 bit linux. "
-        "You'll have to compile Clang 3.6 from source. "
+      message( FATAL_ERROR "No pre-built Clang ${CLANG_VERSION} binaries for 32 bit linux. "
+        "You'll have to compile Clang ${CLANG_VERSION} from source. "
         "See the YCM docs for details on how to use a user-compiled libclang." )
     endif()
   endif()
@@ -84,13 +97,31 @@ if ( USE_CLANG_COMPLETER AND
   endif()
 
   if( CLANG_DOWNLOAD )
-    message( "Downloading Clang 3.6.2" )
+    message( "Downloading Clang ${CLANG_VERSION}" )
 
-    set( CLANG_URL "http://llvm.org/releases/3.6.2" )
-    file(
-      DOWNLOAD "${CLANG_URL}/${CLANG_FILENAME}" "${CLANG_LOCAL_FILE}"
-      SHOW_PROGRESS EXPECTED_HASH SHA256=${CLANG_SHA256}
-    )
+    set( CLANG_URL "http://llvm.org/releases/${CLANG_VERSION}" )
+
+    # Try to download Clang several times until successful to prevent failure
+    # from network issues on CI services.
+    set( DOWNLOAD_TRIES 3 )
+    set( DOWNLOAD_TRY 0 )
+    set( DOWNLOAD_ERROR 1 )
+
+    while( DOWNLOAD_ERROR AND DOWNLOAD_TRY LESS DOWNLOAD_TRIES )
+      file(
+        DOWNLOAD "${CLANG_URL}/${CLANG_FILENAME}" "${CLANG_LOCAL_FILE}"
+        STATUS DOWNLOAD_STATUS
+        SHOW_PROGRESS
+        EXPECTED_HASH SHA256=${CLANG_SHA256}
+      )
+      math( EXPR DOWNLOAD_TRY "${DOWNLOAD_TRY} + 1" )
+      list( GET DOWNLOAD_STATUS 0 DOWNLOAD_ERROR )
+    endwhile()
+
+    if( DOWNLOAD_ERROR )
+      message( FATAL_ERROR
+        "Could not download ${CLANG_URL}/${CLANG_FILENAME}" )
+    endif()
   else()
     message( "Using Clang archive: ${CLANG_LOCAL_FILE}" )
   endif()
@@ -101,16 +132,31 @@ if ( USE_CLANG_COMPLETER AND
     execute_process( COMMAND tar -xjf ${CLANG_FILENAME} )
   elseif( CLANG_FILENAME MATCHES ".+xz" )
     execute_process( COMMAND tar -xJf ${CLANG_FILENAME} )
+  elseif( CLANG_FILENAME MATCHES ".+exe" )
+    # Find 7-zip executable in the PATH and using the registry
+    find_program( 7Z_EXECUTABLE 7z PATHS
+      [HKEY_LOCAL_MACHINE\\SOFTWARE\\7-Zip;Path] )
+    if ( NOT 7Z_EXECUTABLE )
+      message( FATAL_ERROR
+        "7-zip is needed to extract the files from the Clang installer. "
+        "Install it and try again." )
+    endif()
+    execute_process( COMMAND ${7Z_EXECUTABLE} x ${CLANG_FILENAME} OUTPUT_QUIET )
   else()
     execute_process( COMMAND tar -xzf ${CLANG_FILENAME} )
   endif()
 
   # We need to set PATH_TO_LLVM_ROOT. To do that, we first have to find the
   # folder name the archive produced. It isn't the archive base name.
-  execute_process( COMMAND
-    find ${CMAKE_CURRENT_BINARY_DIR}/.. -maxdepth 1 -type d -name clang*
-    OUTPUT_VARIABLE PATH_TO_LLVM_ROOT
-    OUTPUT_STRIP_TRAILING_WHITESPACE )
+  # On Windows, the find command is not available so we directly set the path.
+  if ( WIN32 )
+    set( PATH_TO_LLVM_ROOT ${CMAKE_CURRENT_BINARY_DIR}/../$_OUTDIR )
+  else()
+    execute_process( COMMAND
+      find ${CMAKE_CURRENT_BINARY_DIR}/.. -maxdepth 1 -type d -name clang*
+      OUTPUT_VARIABLE PATH_TO_LLVM_ROOT
+      OUTPUT_STRIP_TRAILING_WHITESPACE )
+  endif()
 endif()
 
 if ( PATH_TO_LLVM_ROOT OR USE_SYSTEM_LIBCLANG OR EXTERNAL_LIBCLANG_PATH )
@@ -255,9 +301,12 @@ if ( EXTERNAL_LIBCLANG_PATH OR USE_SYSTEM_LIBCLANG )
     endif()
   endif()
 
-  set( LIBCLANG_TARGET ${EXTERNAL_LIBCLANG_PATH} )
+  # In Clang 3.7, the library target is a symlink of the soversion one.
+  # Since it will be copied in the project folder, we need the symlinked
+  # library.
+  get_filename_component( LIBCLANG_TARGET "${EXTERNAL_LIBCLANG_PATH}" REALPATH )
   message(
-    "Using external libclang: ${EXTERNAL_LIBCLANG_PATH}" )
+    "Using external libclang: ${LIBCLANG_TARGET}" )
 else()
   set( LIBCLANG_TARGET )
 endif()

@@ -21,7 +21,8 @@ import sys
 import os
 import ycm_client_support
 
-VERSION_FILENAME = 'EXPECTED_CORE_VERSION'
+VERSION_FILENAME = 'CORE_VERSION'
+
 
 def DirectoryOfThisScript():
   return os.path.dirname( os.path.abspath( __file__ ) )

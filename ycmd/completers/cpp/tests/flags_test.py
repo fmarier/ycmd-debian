@@ -46,20 +46,6 @@ def RemoveUnusedFlags_Passthrough_test():
        flags._RemoveUnusedFlags( [ '-foo', '-bar' ], 'file' ) )
 
 
-def RemoveUnusedFlags_RemoveCompilerPathIfFirst_test():
-  def tester( path ):
-    eq_( expected,
-        flags._RemoveUnusedFlags( [ path ] + expected, filename ) )
-
-  compiler_paths = [ 'c++', 'c', 'gcc', 'g++', 'clang', 'clang++',
-                     '/usr/bin/c++', '/some/other/path', 'some_command' ]
-  expected = [ '-foo', '-bar' ]
-  filename = 'file'
-
-  for compiler in compiler_paths:
-    yield tester, compiler
-
-
 def RemoveUnusedFlags_RemoveDashC_test():
   expected = [ '-foo', '-bar' ]
   to_remove = [ '-c' ]
@@ -153,31 +139,70 @@ def RemoveUnusedFlags_RemoveFlagWithoutPrecedingDashFlag_test():
 
 
 def RemoveUnusedFlags_RemoveFilenameWithoutPrecedingInclude_test():
-  expected = [ '-I', '/foo/bar', '-isystem/zoo/goo' ]
+  def tester( flag ):
+    expected = [ flag, '/foo/bar', '-isystem/zoo/goo' ]
+
+    eq_( expected,
+         flags._RemoveUnusedFlags( expected + to_remove, filename ) )
+
+    eq_( expected,
+         flags._RemoveUnusedFlags( to_remove + expected, filename ) )
+
+    eq_( expected + expected,
+         flags._RemoveUnusedFlags( expected + to_remove + expected,
+                                   filename ) )
+
+  include_flags = [ '-isystem', '-I', '-iquote', '--sysroot=', '-isysroot',
+                    '-include', '-iframework', '-F', '-imacros' ]
   to_remove = [ '/moo/boo' ]
   filename = 'file'
 
-  eq_( expected,
-       flags._RemoveUnusedFlags( expected + to_remove, filename ) )
+  for flag in include_flags:
+    yield tester, flag
 
-  eq_( expected,
-       flags._RemoveUnusedFlags( to_remove + expected, filename ) )
 
-  eq_( expected + expected,
-       flags._RemoveUnusedFlags( expected + to_remove + expected, filename ) )
 
-def RemoveXclangFlags():
+def RemoveXclangFlags_test():
   expected = [ '-I', '/foo/bar', '-DMACRO=Value' ]
   to_remove = [ '-Xclang', 'load', '-Xclang', 'libplugin.so',
                 '-Xclang', '-add-plugin', '-Xclang', 'plugin-name' ]
-  filename = 'file'
 
   eq_( expected,
-       flags._RemoveXclangFlags( expected + to_remove, filename ) )
+       flags._RemoveXclangFlags( expected + to_remove ) )
 
   eq_( expected,
-       flags._RemoveXclangFlags( to_remove + expected, filename ) )
+       flags._RemoveXclangFlags( to_remove + expected ) )
 
   eq_( expected + expected,
-       flags._RemoveXclangFlags( expected + to_remove + expected, filename ) )
+       flags._RemoveXclangFlags( expected + to_remove + expected ) )
 
+
+def CompilerToLanguageFlag_Passthrough_test():
+  eq_( [ '-foo', '-bar' ],
+       flags._CompilerToLanguageFlag( [ '-foo', '-bar' ] ) )
+
+
+def CompilerToLanguageFlag_ReplaceCCompiler_test():
+  def tester( path ):
+    eq_( [ '-x', 'c' ] + expected,
+        flags._CompilerToLanguageFlag( [ path ] + expected ) )
+
+  compiler_paths = [ 'cc', 'gcc', 'clang', '/usr/bin/cc',
+                     '/some/other/path', 'some_command' ]
+  expected = [ '-foo', '-bar' ]
+
+  for compiler in compiler_paths:
+    yield tester, compiler
+
+
+def CompilerToLanguageFlag_ReplaceCppCompiler_test():
+  def tester( path ):
+    eq_( [ '-x', 'c++' ] + expected,
+        flags._CompilerToLanguageFlag( [ path ] + expected ) )
+
+  compiler_paths = [ 'c++', 'g++', 'clang++', '/usr/bin/c++',
+                     '/some/other/path++', 'some_command++' ]
+  expected = [ '-foo', '-bar' ]
+
+  for compiler in compiler_paths:
+    yield tester, compiler

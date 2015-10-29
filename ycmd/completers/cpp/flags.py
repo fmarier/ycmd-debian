@@ -21,11 +21,11 @@ import ycm_core
 import os
 import inspect
 from ycmd import extra_conf_store
-from ycmd.utils import ToUtf8IfNeeded, OnMac
+from ycmd.utils import ToUtf8IfNeeded, OnMac, OnWindows
 from ycmd.responses import NoExtraConfDetected
 
 INCLUDE_FLAGS = [ '-isystem', '-I', '-iquote', '--sysroot=', '-isysroot',
-                  '-include', '-iframework', '-F' ]
+                  '-include', '-iframework', '-F', '-imacros' ]
 
 # We need to remove --fcolor-diagnostics because it will cause shell escape
 # sequences to show up in editors, which is bad. See Valloric/YouCompleteMe#1421
@@ -97,29 +97,38 @@ class Flags( object ):
       return sanitized_flags
 
 
-  def UserIncludePaths( self, filename ):
-    flags = self.FlagsForFile( filename, False )
-    if not flags:
-      return []
+  def UserIncludePaths( self, filename, client_data ):
+    flags = self.FlagsForFile( filename, client_data = client_data )
 
+    quoted_include_paths = [ os.path.dirname( filename ) ]
     include_paths = []
-    path_flags = [ '-isystem', '-I', '-iquote' ]
 
-    next_flag_is_include_path = False
-    for flag in flags:
-      if next_flag_is_include_path:
-        next_flag_is_include_path = False
-        include_paths.append( flag )
+    if flags:
+      quote_flag = '-iquote'
+      path_flags = [ '-isystem', '-I' ]
 
-      for path_flag in path_flags:
-        if flag == path_flag:
-          next_flag_is_include_path = True
-          break
+      try:
+        it = iter(flags)
+        for flag in it:
+          flag_len = len( flag )
+          if flag.startswith( quote_flag ):
+            quote_flag_len = len( quote_flag )
+            # Add next flag to the include paths if current flag equals to
+            # '-iquote', or add remaining string otherwise.
+            quoted_include_paths.append( it.next() if flag_len == quote_flag_len
+                                                 else flag[ quote_flag_len: ] )
+          else:
+            for path_flag in path_flags:
+              if flag.startswith( path_flag ):
+                path_flag_len = len( path_flag )
+                include_paths.append( it.next() if flag_len == path_flag_len
+                                              else flag[ path_flag_len: ] )
+                break
+      except StopIteration:
+        pass
 
-        if flag.startswith( path_flag ):
-          path = flag[ len( path_flag ): ]
-          include_paths.append( path )
-    return [ x for x in include_paths if x ]
+    return ( [ x for x in quoted_include_paths if x ],
+             [ x for x in include_paths if x ] )
 
 
   def Clear( self ):
@@ -137,6 +146,7 @@ def _CallExtraConfFlagsForFile( module, filename, client_data ):
 
 
 def PrepareFlagsForClang( flags, filename ):
+  flags = _CompilerToLanguageFlag( flags )
   flags = _RemoveXclangFlags( flags )
   flags = _RemoveUnusedFlags( flags, filename )
   flags = _SanitizeFlags( flags )
@@ -187,24 +197,36 @@ def _SanitizeFlags( flags ):
   return vector
 
 
+def _CompilerToLanguageFlag( flags ):
+  """When flags come from the compile_commands.json file, the first flag is
+  usually the path to the compiler that should be invoked. We want to replace
+  it with a corresponding language flag.
+  E.g., -x c for gcc and -x c++ for g++."""
+
+  # First flag doesn't start with a '-', so it's probably a compiler.
+  if not flags[ 0 ].startswith( '-' ):
+
+    # If the compiler ends with '++', it's probably a C++ compiler
+    # (E.g., c++, g++, clang++, etc).
+    if flags[ 0 ].endswith( '++' ):
+        language = 'c++'
+    else:
+        language = 'c'
+
+    flags = [ '-x', language ] + flags[ 1: ]
+
+  return flags
+
+
 def _RemoveUnusedFlags( flags, filename ):
   """Given an iterable object that produces strings (flags for Clang), removes
   the '-c' and '-o' options that Clang does not like to see when it's producing
   completions for a file. Same for '-MD' etc.
 
-  Also removes the first flag in the list if it does not
-  start with a '-' (it's highly likely to be the compiler name/path).
-
   We also try to remove any stray filenames in the flags that aren't include
   dirs."""
 
   new_flags = []
-
-  # When flags come from the compile_commands.json file, the first flag is
-  # usually the path to the compiler that should be invoked. We want to strip
-  # that.
-  if not flags[ 0 ].startswith( '-' ):
-    flags = flags[ 1: ]
 
   skip_next = False
   previous_flag_is_include = False
@@ -248,6 +270,16 @@ def _ExtraClangFlags():
   if OnMac():
     for path in MAC_INCLUDE_PATHS:
       flags.extend( [ '-isystem', path ] )
+  # On Windows, parsing of templates is delayed until instantation time.
+  # This makes GetType and GetParent commands not returning the expected
+  # result when the cursor is in templates.
+  # Using the -fno-delayed-template-parsing flag disables this behavior.
+  # See http://clang.llvm.org/extra/PassByValueTransform.html#note-about-delayed-template-parsing
+  # for an explanation of the flag and
+  # https://code.google.com/p/include-what-you-use/source/detail?r=566
+  # for a similar issue.
+  if OnWindows():
+    flags.append( '-fno-delayed-template-parsing' )
   return flags
 
 
