@@ -4,7 +4,7 @@ Description: Script is trying to add third_party directory to sys.path.
 
 --- a/ycmd/server_utils.py
 +++ b/ycmd/server_utils.py
-@@ -28,9 +28,6 @@
+@@ -33,9 +33,6 @@
  def SetUpPythonPath():
    sys.path.insert( 0, os.path.join( DirectoryOfThisScript(), '..' ) )
  
@@ -12,5 +12,5 @@ Description: Script is trying to add third_party directory to sys.path.
 -  utils.AddNearestThirdPartyFoldersToSysPath( __file__ )
 -
  
- VERSION_FILENAME = 'EXPECTED_CORE_VERSION'
- 
+ def ExpectedCoreVersion():
+   return int( open( os.path.join( DirectoryOfThisScript(), '..',

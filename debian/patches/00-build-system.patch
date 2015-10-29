@@ -11,10 +11,10 @@ Description: Use Debian's llvm and gmock paths. Also removes unused librt and
 -  find_package( GMock REQUIRED )
 +  add_subdirectory( /usr/src/gmock gmock )
  else()
-   add_subdirectory( gmock )
-   set( GTEST_INCLUDE_DIRS ${gtest_SOURCE_DIR} ${gtest_SOURCE_DIR}/include )
-@@ -80,8 +79,8 @@
- target_link_libraries( ${PROJECT_NAME}
+   if ( WIN32 )
+     # Override BUILD_SHARED_LIBS option in gmock and gtest CMakeLists
+@@ -108,8 +107,8 @@
+                        ${Boost_LIBRARIES}
                         ${SERVER_LIB}
                         ${CLIENT_LIB}
 -                       ${GTEST_LIBRARIES}
@@ -22,11 +22,11 @@ Description: Use Debian's llvm and gmock paths. Also removes unused librt and
 +                       gmock
 +                       )
  
- 
  if ( NOT CMAKE_GENERATOR_IS_XCODE )
+   # The test executable expects a "testdata" dir in its working directory. Why?
 --- a/cpp/ycm/CMakeLists.txt
 +++ b/cpp/ycm/CMakeLists.txt
-@@ -143,7 +143,7 @@
+@@ -189,7 +189,7 @@
  if ( PATH_TO_LLVM_ROOT )
    set( CLANG_INCLUDES_DIR "${PATH_TO_LLVM_ROOT}/include" )
  else()
@@ -35,7 +35,7 @@ Description: Use Debian's llvm and gmock paths. Also removes unused librt and
  endif()
  
  if ( NOT IS_ABSOLUTE "${CLANG_INCLUDES_DIR}" )
-@@ -172,7 +172,7 @@
+@@ -218,7 +218,7 @@
  endif()
  
  if ( USE_SYSTEM_BOOST )
@@ -44,7 +44,7 @@ Description: Use Debian's llvm and gmock paths. Also removes unused librt and
  else()
    set( Boost_INCLUDE_DIR ${BoostParts_SOURCE_DIR} )
    set( Boost_LIBRARIES BoostParts )
-@@ -236,7 +236,9 @@
+@@ -282,7 +282,9 @@
      # On Debian-based systems, llvm installs into /usr/lib/llvm-x.y.
      file( GLOB SYS_LLVM_PATHS "/usr/lib/llvm*/lib" )
      # Need TEMP because find_library does not work with an option variable
@@ -55,7 +55,7 @@ Description: Use Debian's llvm and gmock paths. Also removes unused librt and
                    PATHS
                    ${ENV_LIB_PATHS}
                    /usr/lib
-@@ -266,10 +268,6 @@
+@@ -315,10 +317,6 @@
    set( CMAKE_INSTALL_RPATH "${EXTRA_RPATH}:${CMAKE_INSTALL_RPATH}" )
  endif()
  
