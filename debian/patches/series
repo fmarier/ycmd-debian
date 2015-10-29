@@ -2,4 +2,3 @@
 01-python-path.patch
 02-generic-ycm-extra-conf-py.patch
 03-gocode-path.patch
-04-test-basic-string-alias.patch
