@@ -1,3 +1,9 @@
+ycmd (0+20151019+git0825f85-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Onur Aslan <onur@onur.im>  Thu, 29 Oct 2015 23:03:11 +0300
+
 ycmd (0+20150804+git6f4dbb4-1) unstable; urgency=low
 
   * New upstream release.
