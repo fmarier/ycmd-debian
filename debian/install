@@ -1,5 +1,5 @@
 ycmd/*                                usr/lib/ycmd/ycmd/
-EXPECTED_CORE_VERSION                 usr/lib/ycmd/
+CORE_VERSION                          usr/lib/ycmd/
 check_core_version.py                 usr/lib/ycmd/
 cpp/ycm/.ycm_extra_conf.py            usr/lib/ycmd/
 ycm_*.so                              usr/lib/ycmd/
