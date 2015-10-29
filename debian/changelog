@@ -4,7 +4,7 @@ ycmd (0+20151019+git0825f85-1) UNRELEASED; urgency=low
   * Refresh patches for new upstream version.
   * Remove 04-test-basic-string-alias.patch. Fixed in upstream.
   * Add TypeScript variations to EXCLUDE_TEST_PARAMS in d/rules.
-  * Update override_dh_auto_clean to *.so* files in d/rules.
+  * Update override_dh_auto_clean to remove *.so* files in d/rules.
   * Update override_dh_auto_test to run ./run_tests.py in d/rules.
   * Install CORE_VERSION instead of EXPECTED_CORE_VERSION.
 
