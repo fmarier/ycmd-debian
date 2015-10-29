@@ -73,11 +73,17 @@ def BuildDescriptionOnlyGoToResponse( text ):
   }
 
 
-# TODO: Look at all the callers and ensure they are not using this instead of an
-# exception.
 def BuildDisplayMessageResponse( text ):
   return {
     'message': text
+  }
+
+
+def BuildDetailedInfoResponse( text ):
+  """ Retuns the response object for displaying detailed information about types
+  and usage, suach as within a preview window"""
+  return {
+    'detailed_info': text
   }
 
 
@@ -104,10 +110,13 @@ def BuildCompletionData( insertion_text,
   return completion_data
 
 
-def BuildCompletionResponse( completion_datas, start_column ):
+def BuildCompletionResponse( completion_datas,
+                             start_column,
+                             errors=None ):
   return {
     'completions': completion_datas,
-    'completion_start_column': start_column
+    'completion_start_column': start_column,
+    'errors': errors if errors else [],
   }
 
 def BuildLocationData( location ):

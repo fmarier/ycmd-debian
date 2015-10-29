@@ -21,15 +21,12 @@ import tempfile
 import os
 import sys
 import signal
-import functools
 import socket
 import stat
 import json
 import subprocess
 import collections
 
-WIN_PYTHON27_PATH = 'C:\python27\python.exe'
-WIN_PYTHON26_PATH = 'C:\python26\python.exe'
 # Creation flag to disable creating a console window on Windows. See
 # https://msdn.microsoft.com/en-us/library/windows/desktop/ms684863.aspx
 CREATE_NO_WINDOW = 0x08000000
@@ -124,47 +121,6 @@ def RemoveIfExists( filename ):
     os.remove( filename )
   except OSError:
     pass
-
-
-def Memoize( obj ):
-  cache = obj.cache = {}
-
-  @functools.wraps( obj )
-  def memoizer( *args, **kwargs ):
-    key = str( args ) + str( kwargs )
-    if key not in cache:
-      cache[ key ] = obj( *args, **kwargs )
-    return cache[ key ]
-  return memoizer
-
-
-@Memoize
-def PathToPythonInterpreter():
-  if not RunningInsideVim():
-    return sys.executable
-
-  import vim  # NOQA
-  user_path_to_python = vim.eval( 'g:ycm_path_to_python_interpreter' )
-  if user_path_to_python:
-    return user_path_to_python
-
-  # We check for 'python2' before 'python' because some OS's (I'm looking at you
-  # Arch Linux) have made the... interesting decision to point /usr/bin/python
-  # to python3.
-  python_names = [ 'python2', 'python' ]
-
-  path_to_python = PathToFirstExistingExecutable( python_names )
-  if path_to_python:
-    return path_to_python
-
-  # On Windows, Python may not be on the PATH at all, so we check some common
-  # install locations.
-  if OnWindows():
-    if os.path.exists( WIN_PYTHON27_PATH ):
-      return WIN_PYTHON27_PATH
-    elif os.path.exists( WIN_PYTHON26_PATH ):
-      return WIN_PYTHON26_PATH
-  raise RuntimeError( 'Python 2.7/2.6 not installed!' )
 
 
 def PathToFirstExistingExecutable( executable_name_list ):
@@ -264,7 +220,7 @@ def ForceSemanticCompletion( request_data ):
 
 
 # A wrapper for subprocess.Popen that fixes quirks on Windows.
-def SafePopen( *args, **kwargs ):
+def SafePopen( args, **kwargs ):
   if OnWindows():
     # We need this to start the server otherwise bad things happen.
     # See issue #637.
@@ -272,7 +228,47 @@ def SafePopen( *args, **kwargs ):
       kwargs[ 'stdin' ] = subprocess.PIPE
     # Do not create a console window
     kwargs[ 'creationflags' ] = CREATE_NO_WINDOW
+    # Python 2 fails to spawn a process from a command containing unicode
+    # characters on Windows.  See https://bugs.python.org/issue19264 and
+    # http://bugs.python.org/issue1759845.
+    # Since paths are likely to contains such characters, we convert them to
+    # short ones to obtain paths with only ascii characters.
+    args = ConvertArgsToShortPath( args )
 
   kwargs.pop( 'stdin_windows', None )
-  return subprocess.Popen( *args, **kwargs )
+  return subprocess.Popen( args, **kwargs )
 
+
+# Convert paths in arguments command to short path ones
+def ConvertArgsToShortPath( args ):
+  def ConvertIfPath( arg ):
+    if os.path.exists( arg ):
+      return GetShortPathName( arg )
+    return arg
+
+  if isinstance( args, basestring ):
+    return ConvertIfPath( args )
+  return [ ConvertIfPath( arg ) for arg in args ]
+
+
+# Get the Windows short path name.
+# Based on http://stackoverflow.com/a/23598461/200291
+def GetShortPathName( path ):
+  from ctypes import windll, wintypes, create_unicode_buffer
+
+  # Set the GetShortPathNameW prototype
+  _GetShortPathNameW = windll.kernel32.GetShortPathNameW
+  _GetShortPathNameW.argtypes = [ wintypes.LPCWSTR,
+                                  wintypes.LPWSTR,
+                                  wintypes.DWORD]
+  _GetShortPathNameW.restype = wintypes.DWORD
+
+  output_buf_size = 0
+
+  while True:
+    output_buf = create_unicode_buffer( output_buf_size )
+    needed = _GetShortPathNameW( path, output_buf, output_buf_size )
+    if output_buf_size >= needed:
+      return output_buf.value
+    else:
+      output_buf_size = needed

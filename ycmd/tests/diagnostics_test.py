@@ -152,7 +152,7 @@ def Diagnostics_CsCompleter_ZeroBasedLineAndColumn_test():
   app = TestApp( handlers.app )
   app.post_json( '/ignore_extra_conf_file',
                  { 'filepath': PathToTestFile( '.ycm_extra_conf.py' ) } )
-  filepath = PathToTestFile( 'testy/Program.cs' )
+  filepath = PathToTestFile( 'testy', 'Program.cs' )
   contents = open( filepath ).read()
   event_data = BuildRequest( filepath = filepath,
                              filetype = 'cs',
@@ -199,10 +199,10 @@ def Diagnostics_CsCompleter_MultipleSolution_test():
   app = TestApp( handlers.app )
   app.post_json( '/ignore_extra_conf_file',
                  { 'filepath': PathToTestFile( '.ycm_extra_conf.py' ) } )
-  filepaths = [ PathToTestFile( 'testy/Program.cs' ),
-                PathToTestFile( 'testy-multiple-solutions/'
-                                'solution-named-like-folder/'
-                                'testy/'
+  filepaths = [ PathToTestFile( 'testy', 'Program.cs' ),
+                PathToTestFile( 'testy-multiple-solutions',
+                                'solution-named-like-folder',
+                                'testy',
                                 'Program.cs' ) ]
   lines = [ 11, 10 ]
   for filepath, line in zip( filepaths, lines ):
@@ -309,7 +309,7 @@ def GetDetailedDiagnostic_CsCompleter_Works_test():
   app = TestApp( handlers.app )
   app.post_json( '/ignore_extra_conf_file',
                  { 'filepath': PathToTestFile( '.ycm_extra_conf.py' ) } )
-  filepath = PathToTestFile( 'testy/Program.cs' )
+  filepath = PathToTestFile( 'testy', 'Program.cs' )
   contents = open( filepath ).read()
   event_data = BuildRequest( filepath = filepath,
                              filetype = 'cs',
@@ -361,7 +361,8 @@ def Diagnostics_ClangCompleter_FixIt_Available_test():
   event_data = BuildRequest( contents = contents,
                              event_name = 'FileReadyToParse',
                              filetype = 'cpp',
-                             compilation_flags = [ '-x' , 'c++',
+                             compilation_flags = [ '-x', 'c++',
+                                                   '-std=c++03',
                                                    '-Wall',
                                                    '-Wextra',
                                                    '-pedantic' ] )
