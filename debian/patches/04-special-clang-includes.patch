@@ -1,0 +1,19 @@
+Description: Upstream is providing it's own clang_includes directory.
+ This patch is telling ycmd to use system clang include directory.
+
+--- a/ycmd/completers/cpp/flags.py
++++ b/ycmd/completers/cpp/flags.py
+@@ -284,8 +284,10 @@
+ 
+ 
+ def _SpecialClangIncludes():
+-  libclang_dir = os.path.dirname( ycm_core.__file__ )
+-  path_to_includes = os.path.join( libclang_dir, 'clang_includes' )
+-  return [ '-isystem', path_to_includes ]
++  import glob
++  for clang_include_dir in glob.glob('/usr/lib/clang/*'):
++    if (os.path.basename(clang_include_dir) == '3.6' or
++        os.path.basename(clang_include_dir) == '3.7'):
++      return [ '-isystem', clang_include_dir + '/include' ]
+ 
+ 
