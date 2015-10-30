@@ -18,8 +18,8 @@ DEB_INSTALL_DIR      = $(CURDIR)/debian/$(DEB_SOURCE)
 # failing due to global_ycm_extra_conf defined in
 # 02-generic-ycm-extra-conf-py.patch
 EXCLUDE_TEST_PARAMS  = --exclude='.*CsCompleter.*' --exclude='.*TypeScript.*' \
-					   --exclude='.*Typescript.*' --exclude='.*typescript.*' \
-					   --exclude='.*UnknownExtraConfException.*'
+                       --exclude='.*Typescript.*' --exclude='.*typescript.*' \
+                       --exclude='.*UnknownExtraConfException.*'
 
 # This package is providing extra golang completion feature if golang and
 # gocode packages are installed. *GoCodeCompleter* tests also require golang
@@ -53,8 +53,8 @@ override_dh_install:
 	dh_install
 	# Remove dot from .ycm_extra_conf.py
 	mv $(DEB_INSTALL_DIR)/usr/lib/ycmd/.ycm_extra_conf.py \
-       $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycm_extra_conf.py
-	# No need to install tests
+	   $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycm_extra_conf.py
+	# Remove tests
 	$(RM) -rv $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/completers/all/tests \
 	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/completers/completer_utils_test.py \
 	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/completers/cpp/tests \
