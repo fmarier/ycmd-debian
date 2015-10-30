@@ -11,9 +11,9 @@ Description: Upstream is providing it's own clang_includes directory.
 -  path_to_includes = os.path.join( libclang_dir, 'clang_includes' )
 -  return [ '-isystem', path_to_includes ]
 +  import glob
++  import re
 +  for clang_include_dir in glob.glob('/usr/lib/clang/*'):
-+    if (os.path.basename(clang_include_dir) == '3.6' or
-+        os.path.basename(clang_include_dir) == '3.7'):
++    if re.match('3\.(6|7|8)', os.path.basename(clang_include_dir)):
 +      return [ '-isystem', clang_include_dir + '/include' ]
 +  return []
  
