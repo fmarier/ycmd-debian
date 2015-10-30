@@ -10,6 +10,8 @@ ycmd (0+20151019+git0825f85-1) unstable; urgency=low
   * Add libclang-common-3.6-dev | libclang-common-3.7-dev into recommends
     and add 04-special-clang-includes.patch to point system clang include
     directory. (Closes: #800618)
+  * Replace libclang-3.6-dev | libclang-3.7-dev build dependency with
+    libclang-dev (>= 3.6) to use clang version provided by llvm-defaults.
 
  -- Onur Aslan <onur@csa.onur.im>  Fri, 30 Oct 2015 10:53:46 +0300
 
