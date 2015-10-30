@@ -17,9 +17,7 @@ DEB_INSTALL_DIR      = $(CURDIR)/debian/$(DEB_SOURCE)
 # /usr/lib/ycmd/ycm_extra_conf.py is present, UnknownExtraConfException is
 # failing due to global_ycm_extra_conf defined in
 # 02-generic-ycm-extra-conf-py.patch
-EXCLUDE_TEST_PARAMS  = --exclude='.*CsCompleter.*' --exclude='.*TypeScript.*' \
-                       --exclude='.*Typescript.*' --exclude='.*typescript.*' \
-                       --exclude='.*UnknownExtraConfException.*'
+EXCLUDE_TEST_PARAMS  = --exclude='.*CsCompleter.*' --exclude='.*UnknownExtraConfException.*'
 
 # This package is providing extra golang completion feature if golang and
 # gocode packages are installed. *GoCodeCompleter* tests also require golang
