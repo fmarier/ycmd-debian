@@ -22,7 +22,8 @@ Build-Depends: debhelper (>= 9),
  libboost-system-dev,
  libboost-filesystem-dev,
  libboost-regex-dev,
- libgtest-dev
+ libgtest-dev,
+ node-typescript
 X-Python-Version: >= 2.7
 Standards-Version: 3.9.6
 Homepage: https://github.com/Valloric/ycmd
@@ -40,6 +41,7 @@ Depends: ${shlibs:Depends},
  python-waitress
 Recommends: vim-youcompleteme,
  gocode,
+ node-typescript,
  libclang-common-3.6-dev | libclang-common-3.7-dev | libclang-common-3.8-dev
 Description: code-completion & comprehension server
  ycmd is a server that provides APIs for code-completion and other
