@@ -9,7 +9,7 @@ ycmd (0+20151019+git0825f85-1) UNRELEASED; urgency=low
   * Add libclang-common-3.(6|7|8)-dev into recommends and add
     04-special-clang-includes.patch to point system clang include
     directory. (Closes: #800618)
-  * Replace libclang-3.(6|7) depdendencies with libclang-dev (>= 3.6) to
+  * Replace libclang-3.(6|7) dependencies with libclang-dev (>= 3.6) to
     use default clang version provided by llvm-defaults.
   * Add typescript support:
     - Add node-typescript into Build-Depends and Recommends.
@@ -18,6 +18,8 @@ ycmd (0+20151019+git0825f85-1) UNRELEASED; urgency=low
     - Remove excluded typescript tests to activate typescript tests in
       d/rules.
   * Update 00-build-system.patch to support libclang-3.8-dev.
+  * Update 02-generic-ycm-extra-conf-py.patch to simplify
+    ycm_extra_conf.py.
 
  -- Onur Aslan <onur@onur.im>  Fri, 30 Oct 2015 10:53:46 +0300
 
