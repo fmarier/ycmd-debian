@@ -38,7 +38,9 @@ Depends: ${shlibs:Depends},
  python-jedi,
  python-requests (>= 2.2.1),
  python-waitress
-Recommends: vim-youcompleteme, gocode
+Recommends: vim-youcompleteme,
+ gocode,
+ libclang-common-3.6-dev | libclang-common-3.7-dev
 Description: code-completion & comprehension server
  ycmd is a server that provides APIs for code-completion and other
  code-comprehension use-cases like semantic GoTo commands (and others). For
