@@ -1,0 +1,22 @@
+Description: Use tsserver from node-typescript package.
+
+--- a/ycmd/completers/typescript/typescript_completer.py
++++ b/ycmd/completers/typescript/typescript_completer.py
+@@ -55,7 +55,7 @@
+     # the tsserver process' stdout and stdin
+     self._lock = Lock()
+ 
+-    binarypath = utils.PathToFirstExistingExecutable( [ 'tsserver' ] )
++    binarypath = utils.PathToFirstExistingExecutable( [ '/usr/lib/nodejs/typescript/tsserver.js' ] )
+     if not binarypath:
+       _logger.error( BINARY_NOT_FOUND_MESSAGE )
+       raise RuntimeError( BINARY_NOT_FOUND_MESSAGE )
+@@ -70,7 +70,7 @@
+     # https://github.com/Microsoft/TypeScript/issues/3403
+     # TODO: remove this option when the issue is fixed.
+     # We also need to redirect the error stream to the output one on Windows.
+-    self._tsserver_handle = utils.SafePopen( binarypath,
++    self._tsserver_handle = utils.SafePopen( [ 'nodejs', binarypath ],
+                                              stdout = subprocess.PIPE,
+                                              stdin = subprocess.PIPE,
+                                              stderr = subprocess.STDOUT,

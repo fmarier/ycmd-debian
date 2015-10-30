@@ -3,3 +3,4 @@
 02-generic-ycm-extra-conf-py.patch
 03-gocode-path.patch
 04-special-clang-includes.patch
+05-tsserver-path.patch
