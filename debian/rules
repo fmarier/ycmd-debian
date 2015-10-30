@@ -10,8 +10,7 @@ DEB_UPSTREAM_VERSION = $(shell echo $(DEB_VERSION) | sed -e 's/-[^-]*$$//')
 DEB_INSTALL_DIR      = $(CURDIR)/debian/$(DEB_SOURCE)
 
 
-# Skip CsCompleter (OmniSharp) and TypeScript tests. This package doesn't
-# support them.
+# Skip CsCompleter (OmniSharp) tests. This package doesn't support it yet.
 # We are also skipping UnknownExtraConfException test.
 # If ycmd package is installed in your system or
 # /usr/lib/ycmd/ycm_extra_conf.py is present, UnknownExtraConfException is
