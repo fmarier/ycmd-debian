@@ -1,4 +1,4 @@
-ycmd (0+20151019+git0825f85-1) UNRELEASED; urgency=low
+ycmd (0+20151019+git0825f85-1) unstable; urgency=low
 
   * New upstream release.
   * Refresh patches for new upstream version.
@@ -11,7 +11,7 @@ ycmd (0+20151019+git0825f85-1) UNRELEASED; urgency=low
     and add 04-special-clang-includes.patch to point system clang include
     directory. (Closes: #800618)
 
- -- Onur Aslan <onur@onur.im>  Thu, 29 Oct 2015 23:03:11 +0300
+ -- Onur Aslan <onur@csa.onur.im>  Fri, 30 Oct 2015 10:53:46 +0300
 
 ycmd (0+20150804+git6f4dbb4-1) unstable; urgency=low
 
