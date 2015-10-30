@@ -1,4 +1,4 @@
-ycmd (0+20151019+git0825f85-1) unstable; urgency=low
+ycmd (0+20151019+git0825f85-1) UNRELEASED; urgency=low
 
   * New upstream release.
   * Refresh patches for new upstream version.
