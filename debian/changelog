@@ -1,4 +1,4 @@
-ycmd (0+20151019+git0825f85-1) UNRELEASED; urgency=low
+ycmd (0+20151019+git0825f85-1) unstable; urgency=low
 
   * New upstream release.
   * Refresh patches for new upstream version.
@@ -21,7 +21,7 @@ ycmd (0+20151019+git0825f85-1) UNRELEASED; urgency=low
   * Update 02-generic-ycm-extra-conf-py.patch to simplify
     ycm_extra_conf.py.
 
- -- Onur Aslan <onur@onur.im>  Fri, 30 Oct 2015 10:53:46 +0300
+ -- Onur Aslan <onur@onur.im>  Sat, 31 Oct 2015 12:03:46 +0300
 
 ycmd (0+20150804+git6f4dbb4-1) unstable; urgency=low
 
