@@ -59,6 +59,11 @@ override_dh_install:
 	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/completers/go/tests \
 	          $(DEB_INSTALL_DIR)/usr/lib/ycmd/ycmd/tests
 
+override_dh_link:
+	$(eval YCMD_CLANG_VER=$(shell objdump -x ycm_core.so | grep -oP 'libclang-\K(\d+\.\d+)'))
+	echo "misc:Clang-Ver=$(YCMD_CLANG_VER)" >> debian/ycmd.substvars
+	dh_link -pycmd usr/lib/clang/$(YCMD_CLANG_VER)/include usr/lib/ycmd/clang_includes
+
 get-orig-source:
 	TMPDIR=`mktemp -d -t`; \
 	git clone --recursive $(GIT_URL) $$TMPDIR; \
