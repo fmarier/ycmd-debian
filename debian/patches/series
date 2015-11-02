@@ -2,4 +2,4 @@
 01-python-path.patch
 02-generic-ycm-extra-conf-py.patch
 03-gocode-path.patch
-05-tsserver-path.patch
+04-tsserver-path.patch
