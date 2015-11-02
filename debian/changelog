@@ -6,18 +6,18 @@ ycmd (0+20151019+git0825f85-1) UNRELEASED; urgency=low
   * Update override_dh_auto_clean to remove *.so* files in d/rules.
   * Update override_dh_auto_test to run ./run_tests.py in d/rules.
   * Install CORE_VERSION instead of EXPECTED_CORE_VERSION.
-  * Add libclang-common-3.(6|7|8)-dev into recommends and add
-    04-special-clang-includes.patch to point system clang include
-    directory. (Closes: #800618)
+  * Create a symbolic link to clang includes directory in
+    /usr/lib/ycmd. (Closes: #800618)
+  * Add libclang-common-(CLANG_VER)-dev into recommends.
   * Replace libclang-3.(6|7) dependencies with libclang-dev (>= 3.6) to
     use default clang version provided by llvm-defaults.
   * Add typescript support:
     - Add node-typescript into Build-Depends and Recommends.
-    - Add 05-tsserver-path.patch to use node-typescript for typescript
+    - Add 04-tsserver-path.patch to use node-typescript for typescript
       completion.
     - Remove excluded typescript tests to activate typescript tests in
       d/rules.
-  * Update 00-build-system.patch to support libclang-3.8-dev.
+  * Update 00-build-system.patch to add support for libclang-3.8-dev.
   * Update 02-generic-ycm-extra-conf-py.patch to simplify
     ycm_extra_conf.py.
 
