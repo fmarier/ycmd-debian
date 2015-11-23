@@ -1,3 +1,10 @@
+ycmd (0+20151019+git0825f85-1~francois1) jessie; urgency=medium
+
+  * Non-maintainer upload.
+  * Drop clang build depend to 3.5
+
+ -- Francois Marier <francois@debian.org>  Mon, 23 Nov 2015 11:28:18 -0800
+
 ycmd (0+20151019+git0825f85-1) unstable; urgency=low
 
   * New upstream release.
