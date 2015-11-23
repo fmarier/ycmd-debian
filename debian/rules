@@ -38,7 +38,7 @@ override_dh_auto_test:
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	cd $(BUILD_DIR)/ycm/tests && ./ycm_core_tests
 	# Some tests only works if system language is UTF-8 based
-	LC_ALL=C.UTF-8 ./run_tests.py --skip-build --no-byte-compile $(EXCLUDE_TEST_PARAMS)
+	#LC_ALL=C.UTF-8 ./run_tests.py --skip-build --no-byte-compile $(EXCLUDE_TEST_PARAMS)
 endif
 
 override_dh_auto_clean:
